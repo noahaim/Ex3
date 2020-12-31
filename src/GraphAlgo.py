@@ -1,12 +1,12 @@
 from typing import List
-
+from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
-from GraphInterface import GraphInterface
+
 
 class GraphAlgo(GraphAlgoInterface):
 
-   def __init__(self, my_graph : GraphInterface=None):
-       self.my_graph = my_graph
+    def __init__(self, graph=DiGraph()):
+        self.my_graph = graph
 
     def get_graph(self) -> GraphInterface:
         return my_graph
@@ -19,7 +19,8 @@ class GraphAlgo(GraphAlgoInterface):
         pass
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-        pass
+        if self.my_graph.get_all_v().get(id1) is None or self.my_graph.get_all_v().get(id2) is None:
+            return (float('inf'), [])
 
     def connected_component(self, id1: int) -> list:
         pass
@@ -29,3 +30,4 @@ class GraphAlgo(GraphAlgoInterface):
 
     def plot_graph(self) -> None:
         pass
+
