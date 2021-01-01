@@ -1,4 +1,4 @@
-from GeoLocation import GeoLocation
+
 
 
 class MyNode:
@@ -20,7 +20,10 @@ class MyNode:
         self.connected_component = key
 
     def set_weight(self, weight: float = float('inf')):
-        self.weight = float('inf')
+        self.weight = weight
+
+    # def get_weight(self, key: int):
+    #     return self.weight
 
     def set_parent(self, parent: int = None):
         self.parent = parent
@@ -36,3 +39,13 @@ class MyNode:
 
     def remove_edges_out(self, edge_dest: int):
         self.edges_out.__delitem__(edge_dest)
+
+    # def __gt__(self, other):
+    #     return self.weight < other.weight
+    #
+    # def __eq__(self, other):
+    #     return self.weight == other.weight
+    def __lt__(self, other):
+        return self.weight < other.weight
+
+

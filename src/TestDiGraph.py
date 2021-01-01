@@ -1,6 +1,7 @@
 import unittest
 from DiGraph import DiGraph
 
+
 class MyTestCase(unittest.TestCase):
 
     def test_add_node(self):
@@ -94,6 +95,7 @@ class MyTestCase(unittest.TestCase):
         # the nodes are in the graph but no edge between them
         g.remove_edge(3, 2)
         self.assertEqual(3, g.edges_size)
+
 
 if __name__ == '__main__':
     unittest.main()
