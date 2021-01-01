@@ -53,7 +53,6 @@ class GraphAlgo(GraphAlgoInterface):
         path.reverse()
         return weight_path, path
 
-
     def connected_component(self, id1: int) -> list:
         if self.my_graph.get_all_v().get(id1) is None:
             return []
@@ -85,11 +84,9 @@ class GraphAlgo(GraphAlgoInterface):
     def plot_graph(self) -> None:
         pass
 
-
     def bfs(self, node_key: int, upside_down: bool):
         for node in self.my_graph.get_all_v().values():
             node.set_tag(-1)
-
         queue = SimpleQueue()
         src = self.my_graph.get_all_v().get(node_key)
         src.set_tag(0)
