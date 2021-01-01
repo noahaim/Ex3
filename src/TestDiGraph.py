@@ -12,6 +12,7 @@ class MyTestCase(unittest.TestCase):
         g.add_node(50)
         self.assertEqual(2, g.v_size())
 
+
     def test_get_all_v(self):
         g = DiGraph()
         self.assertEqual(0, len(g.get_all_v()))  # No nodes

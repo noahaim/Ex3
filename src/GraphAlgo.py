@@ -1,5 +1,6 @@
-from typing import List
 from queue import SimpleQueue
+
+from typing import List
 from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
 from GraphInterface import GraphInterface
@@ -66,8 +67,6 @@ class GraphAlgo(GraphAlgoInterface):
         for node in help_list:
             node.set_connected_component(id1)
         return help_list
-
-        pass
 
     def connected_components(self) -> List[list]:
         if self.my_graph.v_size() == 0:
