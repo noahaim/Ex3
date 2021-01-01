@@ -60,9 +60,9 @@ class MyTestCase(unittest.TestCase):
         g.add_edge(0, 1, 1)
         g.add_edge(1, 2, 2)
         g.add_edge(2, 3, 3)
-        self.assertEqual(3, g.edges_size)
+        self.assertEqual(3, g.e_size())
         g.remove_node(1)
-        self.assertEqual(1, g.edges_size)
+        self.assertEqual(1, g.e_size())
 
     def test_add_edge(self):
         g = DiGraph()
@@ -85,7 +85,7 @@ class MyTestCase(unittest.TestCase):
         g.add_edge(1, 2, 2)
         g.add_edge(2, 3, 3)
         g.add_edge(3, 4, 4)
-        self.assertEqual(4, g.edges_size)
+        self.assertEqual(4, g.e_size())
         g.remove_edge(0, 1)
         # the 2 nodes are not un the graph
         g.remove_edge(7, 8)
@@ -94,7 +94,7 @@ class MyTestCase(unittest.TestCase):
         g.remove_edge(8, 1)
         # the nodes are in the graph but no edge between them
         g.remove_edge(3, 2)
-        self.assertEqual(3, g.edges_size)
+        self.assertEqual(3, g.e_size())
 
 
 if __name__ == '__main__':

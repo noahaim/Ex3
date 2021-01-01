@@ -1,5 +1,6 @@
+import json
 from queue import SimpleQueue
-
+import _json
 from typing import List
 from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
@@ -16,10 +17,28 @@ class GraphAlgo(GraphAlgoInterface):
         return self.my_graph
 
     def load_from_json(self, file_name: str) -> bool:
-        pass
+        my_dict = {}
+        graph = DiGraph()
+        try:
+            with open(file_name, "r") as file:
+                my_dict = json.load(file)
+                graph.from_json(my_dict)
+                self.my_graph = graph
+                return True
+        except IOError as e:
+            print(e)
+            return False
 
     def save_to_json(self, file_name: str) -> bool:
-        pass
+        if self.my_graph is None:
+            return False
+        try:
+            with open(file_name, "w") as file:
+                json.dump(self.my_graph, default=lambda m: m.to_dict(), indent=4, fp=file)
+                return True
+        except IOError as e:
+            print(e)
+            return False
 
     def dijkstra(self, src: int):
         # update all th node in the graph to weight inf and parent none
@@ -54,7 +73,6 @@ class GraphAlgo(GraphAlgoInterface):
         path.reverse()
         return weight_path, path
 
-
     def connected_component(self, id1: int) -> list:
         if self.my_graph.get_all_v().get(id1) is None:
             return []
@@ -84,7 +102,6 @@ class GraphAlgo(GraphAlgoInterface):
     def plot_graph(self) -> None:
         pass
 
-
     def bfs(self, node_key: int, upside_down: bool):
         for node in self.my_graph.get_all_v().values():
             node.set_tag(-1)
@@ -104,4 +121,3 @@ class GraphAlgo(GraphAlgoInterface):
                 if node_neighbor.tag == -1:
                     node_neighbor.set_tag(node_temp.tag + 1)
                     queue.put(node_neighbor)
-

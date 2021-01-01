@@ -1,10 +1,7 @@
-
-
-
 class MyNode:
-    def __init__(self, key: int, pos: tuple = None, tag: int = -1,
+    def __init__(self, id: int, pos: tuple = None, tag: int = -1,
                  weight: float = float('inf')):
-        self.key = key
+        self.key = id
         self.pos = pos
         self.tag = tag
         self.weight = weight
@@ -43,9 +40,20 @@ class MyNode:
     # def __gt__(self, other):
     #     return self.weight < other.weight
     #
-    # def __eq__(self, other):
-    #     return self.weight == other.weight
+    def __eq__(self, other):
+        return self.pos == other.pos and self.key == other.key and self.edges_out == other.edges_out \
+               and self.edges_in == other.edges_in
+
     def __lt__(self, other):
         return self.weight < other.weight
 
+    def to_dict(self):
+        if self.pos is None:
+            return {"id": self.key}
+        return {"id": self.key, "pos": self.pos}
 
+    def my_edges(self):
+        ans = []
+        for dest, w in self.edges_out.items():
+            ans.append({"src": self.key, "dest": dest, "w": w})
+        return ans

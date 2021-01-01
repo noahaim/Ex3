@@ -50,7 +50,7 @@ class DiGraph(GraphInterface):
 
     def add_node(self, node_id: int, pos: tuple = None) -> bool:
         if self.__nodes.get(node_id) is None:
-            node = MyNode(key=node_id, pos=pos)
+            node = MyNode(id=node_id, pos=pos)
             self.__nodes[node_id] = node
             self.__mc += 1
             return True
@@ -79,3 +79,32 @@ class DiGraph(GraphInterface):
         self.__mc += 1
         self.__edges_size -= 1
         return True
+
+    def to_dict(self):
+        ans = {}
+        nodes = []
+        for node in self.__nodes.values():
+            nodes.append(node.to_dict())
+        ans["Nodes"] = nodes
+        edges = []
+        for node in self.__nodes.values():
+            for edge in node.my_edges():
+                edges.append(edge)
+        ans["Edges"] = edges
+        return ans
+
+    def from_json(self, json: dict = {}):
+        nodes = json["Nodes"]
+        for node in nodes:
+            my_node = MyNode(**node)
+            self.__nodes[my_node.key] = my_node
+        edges = json["Edges"]
+        for edge in edges:
+            self.add_edge(edge.get("src"), edge.get("dest"), edge.get("w"))
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__) is False:
+            return False
+        if self.e_size() != other.e_size() or self.v_size() != other.v_size():
+            return False
+        return self.get_all_v() == other.get_all_v()
