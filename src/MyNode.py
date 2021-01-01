@@ -1,7 +1,8 @@
 
 
+
 class MyNode:
-    def __init__(self, key: int, pos: tuple = None, tag: int = 0,
+    def __init__(self, key: int, pos: tuple = None, tag: int = -1,
                  weight: float = float('inf')):
         self.key = key
         self.pos = pos
@@ -10,9 +11,13 @@ class MyNode:
         self.edges_in = {}
         self.edges_out = {}
         self.parent = None
+        self.connected_component = None
 
     def set_tag(self, tag: int = 0):
         self.tag = tag
+
+    def set_connected_component(self, key: int):
+        self.connected_component = key
 
     def set_weight(self, weight: float = float('inf')):
         self.weight = weight
