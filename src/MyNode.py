@@ -28,6 +28,9 @@ class MyNode:
     def set_parent(self, parent: int = None):
         self.parent = parent
 
+    def set_pos(self, other_pos: tuple = None):
+        self.pos = other_pos
+
     def add_edges_in(self, edge_src: int, edge_weight: float):
         self.edges_in[edge_src] = edge_weight
 
