@@ -176,20 +176,19 @@ class GraphAlgo(GraphAlgoInterface):
             y_vals.append(v.pos[1])
         ax = plt.axes()
         for v in self.my_graph.get_all_v().values():
-            ax.annotate(v.key, (v.pos[0], v.pos[1]-0.5), fontsize=10)
+            ax.annotate(v.key, (v.pos[0], v.pos[1] - 0.5), fontsize=10)
             for n in self.my_graph.all_out_edges_of_node(v.key).keys():
                 x1 = v.pos[0]
                 y1 = v.pos[1]
-                x2 = self.my_graph.get_all_v().get(n).pos[0]-x1
-                y2 = self.my_graph.get_all_v().get(n).pos[1]-y1
-                temp = math.sqrt(x2**2+y2**2)
+                x2 = self.my_graph.get_all_v().get(n).pos[0] - x1
+                y2 = self.my_graph.get_all_v().get(n).pos[1] - y1
+                temp = math.sqrt(x2 ** 2 + y2 ** 2)
                 x2 = x2 / temp
                 y2 = y2 / temp
                 temp = temp - 0.3
-                ax.arrow(x1, y1, temp*x2, temp*y2, head_width=0.1, head_length=0.2, fc='k', ec='k')
+                ax.arrow(x1, y1, temp * x2, temp * y2, head_width=0.1, head_length=0.2, fc='k', ec='k')
         ax.plot(x_vals, y_vals, "o", color='red')
         plt.show()
-
 
     def bfs(self, node_key: int, upside_down: bool):
         """
