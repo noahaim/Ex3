@@ -60,18 +60,29 @@ class GraphAlgo(GraphAlgoInterface):
             return False
 
     def dijkstra(self, src: int):
+        """
+        get node src and updates the weight of each node in the graph to the weight of the shortest path from it to src
+        and also updates in each node his parent on the shortest path
+        :param src:
+        """
         # update all th node in the graph to weight inf and parent none
         for node in self.my_graph.get_all_v().values():
             node.set_parent(None)
             node.set_weight(float('inf'))
         # short_path from key to himself is 0
         self.my_graph.get_all_v().get(src).set_weight(0)
+        # creates priority queue and insert src node
         pq_help = []
         heapq.heappush(pq_help, self.my_graph.get_all_v().get(src))
         while pq_help:
+            # removes the node with the smallest weight from priority queue
             temp_node = heapq.heappop(pq_help)
+            # go over his akk neighbors
             for key in self.my_graph.all_out_edges_of_node(temp_node.key).keys():
+                # calculate the weight of temp_node and with the edge between him and the neighbor
                 m = temp_node.weight + temp_node.edges_out[key]
+                # if this weight is less than the neighbor's weight update the parent and the neighbor's weight and
+                # insert it to the priority queue
                 if m < self.my_graph.get_all_v().get(key).weight:
                     self.my_graph.get_all_v().get(key).set_weight(m)
                     self.my_graph.get_all_v().get(key).set_parent(temp_node.key)
@@ -80,37 +91,29 @@ class GraphAlgo(GraphAlgoInterface):
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         """
-               Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm
-               @param id1: The start node id
-               @param id2: The end node id
-               @return: The distance of the path, the path as a list
-
-               Example:
-       #      >>> from GraphAlgo import GraphAlgo
-       #       >>> g_algo = GraphAlgo()
-       #        >>> g_algo.addNode(0)
-       #        >>> g_algo.addNode(1)
-       #        >>> g_algo.addNode(2)
-       #        >>> g_algo.addEdge(0,1,1)
-       #        >>> g_algo.addEdge(1,2,4)
-       #        >>> g_algo.shortestPath(0,1)
-       #        (1, [0, 1])
-       #        >>> g_algo.shortestPath(0,2)
-       #        (5, [0, 1, 2])
-
-               More info:
-               https://en.wikipedia.org/wiki/Dijkstra's_algorithm
-               """
-
+<<<<<<< HEAD
+        Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm
+        @param id1: The start node id
+        @param id2: The end node id
+        @return: The distance of the path, the path as a list
+        """
+        # id id1 or id2 not in the graph
         if self.my_graph.get_all_v().get(id1) is None or self.my_graph.get_all_v().get(id2) is None:
             return float('inf'), []
+        #  Updates the weight of each node to the weight of the shortest path from it to id1 and his parent
         self.dijkstra(id1)
+        #  the weight of the shortest path from id1 to id2
         weight_path = self.my_graph.get_all_v().get(id2).weight
+        #  no path from id1 to id2
+        if weight_path == float('inf'):
+            return float('inf'), []
         path = [id2]
         parent = self.my_graph.get_all_v().get(id2).parent
+        # Get the short path by the parents
         while parent is not None:
             path.append(parent)
             parent = self.my_graph.get_all_v().get(parent).parent
+        # The path is from the end to the beginning so we will reverse it
         path.reverse()
         return weight_path, path
 
@@ -185,7 +188,7 @@ class GraphAlgo(GraphAlgoInterface):
                 temp = math.sqrt(x2 ** 2 + y2 ** 2)
                 x2 = x2 / temp
                 y2 = y2 / temp
-                temp = temp - 0.3
+                temp = temp - 0.2
                 ax.arrow(x1, y1, temp * x2, temp * y2, head_width=0.1, head_length=0.2, fc='k', ec='k')
         ax.plot(x_vals, y_vals, "o", color='red')
         plt.show()
