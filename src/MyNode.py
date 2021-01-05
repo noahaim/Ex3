@@ -38,6 +38,9 @@ class MyNode:
         """
         self.parent = parent
 
+    def set_pos(self, other_pos: tuple = None):
+        self.pos = other_pos
+
     def add_edges_in(self, edge_src: int, edge_weight: float):
         """
             get src of  an edge that pointing to this node and it weight

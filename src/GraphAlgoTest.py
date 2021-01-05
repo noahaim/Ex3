@@ -67,6 +67,5 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(graph == graph_algo.get_graph())
 
 
-
 if __name__ == '__main__':
     unittest.main()
