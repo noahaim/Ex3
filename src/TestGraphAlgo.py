@@ -52,6 +52,7 @@ class MyTestCase(unittest.TestCase):
         g.add_edge(6, 8, 8)
         g.add_edge(8, 6, 8)
         list = algo.connected_component(0)
+        self.assertTrue(algo.connected_component(0) == algo.connected_component(8))
         self.assertTrue(list.__contains__(g.get_all_v().get(8)))
         # ccs should only contain 9 (no edges from 9)
         list2 = algo.connected_component(9)
@@ -61,6 +62,27 @@ class MyTestCase(unittest.TestCase):
         list3 = algo.connected_component(5)
         for node in list3:
             self.assertTrue(list.__contains__(node))
+
+    def test_list_of_SCC(self):
+        g = DiGraph()
+        for i in range(5):
+            g.add_node(i)
+        algo = GraphAlgo(g)
+        self.assertEqual(5, len(algo.connected_components()))
+        self.assertTrue(algo.connected_components().__contains__(algo.connected_component(4)))
+        g.add_edge(0, 1, 1)
+        self.assertEqual(5, len(algo.connected_components()))
+        g.add_edge(1, 0, 1)  # SCC with 0 and 1
+        self.assertEqual(4, len(algo.connected_components()))
+        self.assertTrue(algo.connected_components().__contains__(algo.connected_component(0)))
+        g.add_edge(1, 2, 0)
+        self.assertEqual(4, len(algo.connected_components()))
+        g.add_edge(2, 0, 0)
+        self.assertEqual(3, len(algo.connected_components()))
+        g.remove_edge(2, 0)
+        self.assertEqual(4, len(algo.connected_components()))
+        g.add_edge(2, 0, 0)
+        self.assertTrue(algo.connected_components().__contains__(algo.connected_component(2)))
 
     def test_json_save_and_lode(self):
         # simple graph no edges
@@ -72,6 +94,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(graph_algo.load_from_json("json_test.json"))
         self.assertTrue(graph == graph_algo.get_graph())
         graph.remove_node(50)
+        self.assertFalse(graph is graph_algo.get_graph())
         self.assertFalse(graph == graph_algo.get_graph())
         # big graph with edges
         graph = DiGraph()
@@ -85,12 +108,34 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(graph_algo.save_to_json("json_test.json"))
         self.assertTrue(graph_algo.load_from_json("json_test.json"))
         self.assertTrue(graph == graph_algo.get_graph())
+        graph.remove_node(0)
+        graph.remove_node(5)
+        graph.remove_edge(3, 5)
+        self.assertFalse(graph == graph_algo.get_graph())
         # empty graph test
         graph = DiGraph()
         graph_algo = GraphAlgo(graph)
         self.assertTrue(graph_algo.save_to_json("json_test.json"))
         self.assertTrue(graph_algo.load_from_json("json_test.json"))
         self.assertTrue(graph == graph_algo.get_graph())
+
+    def test_create(self):
+        graph = DiGraph()
+        algo = GraphAlgo(graph)
+        for i in range(10):
+            graph.add_node(i)
+        graph.get_all_v().get(0).set_pos((5.2, 5.2, 5.2))
+        print(type(graph.get_all_v().get(0).pos[0]))
+        algo.save_to_json("test.json")
+        algo.load_from_json("test.json")
+        print(type(algo.my_graph.get_all_v().get(0).pos[0]))
+        print(graph.to_dict())
+        algo.load_from_json("A5_edited")
+        print(type(algo.my_graph.get_all_v().get(0).pos[0]))
+        print((algo.my_graph.get_all_v().get(0).pos[0]))
+        print((algo.my_graph.get_all_v().get(0).pos[1]))
+        print((algo.my_graph.to_dict()))
+
 
 
 if __name__ == '__main__':

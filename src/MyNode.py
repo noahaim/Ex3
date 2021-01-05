@@ -1,8 +1,14 @@
 class MyNode:
-    def __init__(self, id: int, pos: tuple = None, tag: int = -1,
+    def __init__(self, id: int, pos: str = None, tag: int = -1,
                  weight: float = float('inf')):
         self.key = id
-        self.pos = pos
+        if pos is not None and isinstance(pos, str):  # so i can build the node from json when pos is a string
+            self.pos = pos.split(",")
+            self.pos = [float(i) for i in self.pos]
+            # for pos_num in self.pos:
+            #     pos_num = float(pos_num)
+        else:
+            self.pos = pos
         self.tag = tag
         self.weight = weight
         self.edges_in = {}
@@ -83,7 +89,7 @@ class MyNode:
         if isinstance(other, self.__class__) is False:
             return False
         return self.pos == other.pos and self.key == other.key and self.edges_out == other.edges_out \
-            and self.edges_in == other.edges_in
+               and self.edges_in == other.edges_in
 
     def __lt__(self, other):
         """
@@ -100,7 +106,8 @@ class MyNode:
         """
         if self.pos is None:
             return {"id": self.key}
-        return {"id": self.key, "pos": self.pos}
+        str_pos = "{},{},{}".format(self.pos[0], self.pos[1], self.pos[2])
+        return {"id": self.key, "pos": str_pos}
 
     def my_edges(self):
         """
