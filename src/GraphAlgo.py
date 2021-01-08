@@ -1,5 +1,5 @@
 import json
-from queue import SimpleQueue
+from queue import SimpleQueue, PriorityQueue
 import _json
 from typing import List
 from DiGraph import DiGraph
@@ -70,24 +70,25 @@ class GraphAlgo(GraphAlgoInterface):
             node.set_parent(None)
             node.set_weight(float('inf'))
         # short_path from key to himself is 0
-        self.my_graph.get_all_v().get(src).set_weight(0)
+        start = self.my_graph.get_all_v().get(src)
+        start.set_weight(0)
         # creates priority queue and insert src node
-        pq_help = []
-        heapq.heappush(pq_help, self.my_graph.get_all_v().get(src))
-        while pq_help:
+        pq_help = PriorityQueue()
+        pq_help.put((start.weight, start))
+        while pq_help.qsize() != 0:
             # removes the node with the smallest weight from priority queue
-            temp_node = heapq.heappop(pq_help)
-            # go over his akk neighbors
+            temp_node = pq_help.get()[1]
+            # go over his all neighbors
             for key in self.my_graph.all_out_edges_of_node(temp_node.key).keys():
                 # calculate the weight of temp_node and with the edge between him and the neighbor
                 m = temp_node.weight + temp_node.edges_out[key]
                 # if this weight is less than the neighbor's weight update the parent and the neighbor's weight and
                 # insert it to the priority queue
-                if m < self.my_graph.get_all_v().get(key).weight:
-                    self.my_graph.get_all_v().get(key).set_weight(m)
-                    self.my_graph.get_all_v().get(key).set_parent(temp_node.key)
-                    heapq.heappush(pq_help, self.my_graph.get_all_v().get(key))
-                    heapq.heapify(pq_help)
+                node = self.my_graph.get_all_v().get(key)
+                if m < node.weight:
+                    node.set_weight(m)
+                    node.set_parent(temp_node.key)
+                    pq_help.put((node.weight, node))
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         """
@@ -97,18 +98,19 @@ class GraphAlgo(GraphAlgoInterface):
         @param id2: The end node id
         @return: The distance of the path, the path as a list
         """
+        node2 = self.my_graph.get_all_v().get(id2)
         # id id1 or id2 not in the graph
-        if self.my_graph.get_all_v().get(id1) is None or self.my_graph.get_all_v().get(id2) is None:
+        if self.my_graph.get_all_v().get(id1) is None or node2 is None:
             return float('inf'), []
         #  Updates the weight of each node to the weight of the shortest path from it to id1 and his parent
         self.dijkstra(id1)
         #  the weight of the shortest path from id1 to id2
-        weight_path = self.my_graph.get_all_v().get(id2).weight
+        weight_path = node2.weight
         #  no path from id1 to id2
-        if weight_path == float('inf'):
+        if weight_path is float('inf'):
             return float('inf'), []
         path = [id2]
-        parent = self.my_graph.get_all_v().get(id2).parent
+        parent = node2.parent
         # Get the short path by the parents
         while parent is not None:
             path.append(parent)
@@ -174,12 +176,12 @@ class GraphAlgo(GraphAlgoInterface):
         y_vals = []
         for v in self.my_graph.get_all_v().values():
             if v.pos is None:
-                v.set_pos((random.randint(1, 20), random.randint(1, 20), 0))
+                v.set_pos((random.random()*100, random.random()*100, 0))
             x_vals.append(v.pos[0])
             y_vals.append(v.pos[1])
-        ax = plt.axes()
+        # ax = plt.axes()
         for v in self.my_graph.get_all_v().values():
-            ax.annotate(v.key, (v.pos[0], v.pos[1] - 0.5), fontsize=10)
+            plt.annotate(v.key, (v.pos[0], v.pos[1]), fontsize=10)
             for n in self.my_graph.all_out_edges_of_node(v.key).keys():
                 x1 = v.pos[0]
                 y1 = v.pos[1]
@@ -188,9 +190,10 @@ class GraphAlgo(GraphAlgoInterface):
                 temp = math.sqrt(x2 ** 2 + y2 ** 2)
                 x2 = x2 / temp
                 y2 = y2 / temp
-                temp = temp - 0.2
-                ax.arrow(x1, y1, temp * x2, temp * y2, head_width=0.1, head_length=0.2, fc='k', ec='k')
-        ax.plot(x_vals, y_vals, "o", color='red')
+                temp = temp - 1.5
+                plt.arrow(x1, y1, temp * x2, temp * y2, head_width=1, head_length=1, fc='k', ec='k')
+
+        plt.plot(x_vals, y_vals, "o", color='red')
         plt.show()
 
     def bfs(self, node_key: int, upside_down: bool):

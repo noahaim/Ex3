@@ -182,3 +182,7 @@ class DiGraph(GraphInterface):
             return False
         return self.get_all_v() == other.get_all_v()  # checks if the nodes are the same (they hold the edges inside
         # so also checks that
+
+    def __str__(self):
+       return "Graph: "+"|V|="+str(self.v_size())+" , |E|=" + str(self.e_size())
+

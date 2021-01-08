@@ -163,8 +163,5 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(g == other)
         self.assertFalse(g == 50)
 
-
-
-
 if __name__ == '__main__':
     unittest.main()

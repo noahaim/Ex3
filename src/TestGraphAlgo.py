@@ -1,4 +1,7 @@
 import unittest
+import time
+
+import networkx as nx
 
 from DiGraph import DiGraph
 from GraphAlgo import GraphAlgo
@@ -198,8 +201,6 @@ class MyTestCase(unittest.TestCase):
         print((algo.my_graph.get_all_v().get(0).pos[0]))
         print((algo.my_graph.get_all_v().get(0).pos[1]))
         print((algo.my_graph.to_dict()))
-
-
 
 if __name__ == '__main__':
     unittest.main()

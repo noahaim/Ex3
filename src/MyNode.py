@@ -119,3 +119,7 @@ class MyNode:
         for dest, weight in self.edges_out.items():
             ans.append({"src": self.key, "dest": dest, "w": weight})
         return ans
+
+    def __repr__(self):
+        return str(self.key) + ": |edges out| " + str(len(self.edges_out)) + " |edges in| " + str(len(self.edges_in))
+
