@@ -42,6 +42,7 @@ class MyTestCase(unittest.TestCase):
         g.add_edge(6, 8, 8)
         g.add_edge(8, 6, 8)
         list = algo.connected_component(0)
+        list.sort(lambda x:x.get_key())
         self.assertTrue(list.__contains__(g.get_all_v().get(8)))
         # ccs should only contain 9 (no edges from 9)
         list2 = algo.connected_component(9)
@@ -199,7 +200,17 @@ class MyTestCase(unittest.TestCase):
         print((algo.my_graph.get_all_v().get(0).pos[1]))
         print((algo.my_graph.to_dict()))
 
-
+    def test_create_graph_1000000_node(self):
+        graph = DiGraph()
+        for i in range(100000):
+            graph.add_node(i)
+        for i in range(100):
+            for j in range(10):
+                graph.add_edge(i, j, 1)
+        algo = GraphAlgo(graph)
+        algo.save_to_json("graph with 1000000 nodes.json")
+        print(graph.e_size())
+        print(graph.v_size())
 
 if __name__ == '__main__':
     unittest.main()

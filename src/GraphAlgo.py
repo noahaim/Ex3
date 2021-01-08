@@ -1,5 +1,7 @@
 import json
 from queue import SimpleQueue
+from queue import LifoQueue as stack
+from queue import PriorityQueue
 import _json
 from typing import List
 from DiGraph import DiGraph
@@ -65,29 +67,37 @@ class GraphAlgo(GraphAlgoInterface):
         and also updates in each node his parent on the shortest path
         :param src:
         """
-        # update all th node in the graph to weight inf and parent none
-        for node in self.my_graph.get_all_v().values():
-            node.set_parent(None)
-            node.set_weight(float('inf'))
-        # short_path from key to himself is 0
-        self.my_graph.get_all_v().get(src).set_weight(0)
-        # creates priority queue and insert src node
-        pq_help = []
-        heapq.heappush(pq_help, self.my_graph.get_all_v().get(src))
-        while pq_help:
-            # removes the node with the smallest weight from priority queue
-            temp_node = heapq.heappop(pq_help)
-            # go over his akk neighbors
-            for key in self.my_graph.all_out_edges_of_node(temp_node.key).keys():
-                # calculate the weight of temp_node and with the edge between him and the neighbor
-                m = temp_node.weight + temp_node.edges_out[key]
-                # if this weight is less than the neighbor's weight update the parent and the neighbor's weight and
-                # insert it to the priority queue
-                if m < self.my_graph.get_all_v().get(key).weight:
-                    self.my_graph.get_all_v().get(key).set_weight(m)
-                    self.my_graph.get_all_v().get(key).set_parent(temp_node.key)
-                    heapq.heappush(pq_help, self.my_graph.get_all_v().get(key))
-                    heapq.heapify(pq_help)
+
+        def dijkstra(self, src: int):
+            """
+            get node src and updates the weight of each node in the graph to the weight of the shortest path from it to src
+            and also updates in each node his parent on the shortest path
+            :param src:
+            """
+            # update all th node in the graph to weight inf and parent none
+            for node in self.my_graph.get_all_v().values():
+                node.set_parent(None)
+                node.set_weight(float('inf'))
+            # short_path from key to himself is 0
+            start = self.my_graph.get_all_v().get(src)
+            start.set_weight(0)
+            # creates priority queue and insert src node
+            pq_help = PriorityQueue()
+            pq_help.put((start.weight, start))
+            while pq_help.qsize() != 0:
+                # removes the node with the smallest weight from priority queue
+                temp_node = pq_help.get()[1]
+                # go over his all neighbors
+                for key in self.my_graph.all_out_edges_of_node(temp_node.key).keys():
+                    # calculate the weight of temp_node and with the edge between him and the neighbor
+                    m = temp_node.weight + temp_node.edges_out[key]
+                    # if this weight is less than the neighbor's weight update the parent and the neighbor's weight and
+                    # insert it to the priority queue
+                    node = self.my_graph.get_all_v().get(key)
+                    if m < node.weight:
+                        node.set_weight(m)
+                        node.set_parent(temp_node.key)
+                        pq_help.put((node.weight, node))
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         """
@@ -123,6 +133,8 @@ class GraphAlgo(GraphAlgoInterface):
             @param id1: The node id
             @return: The list of nodes in the SCC
         """
+        if self.my_graph is None:
+            return []
         # the node is not in the graph
         if self.my_graph.get_all_v().get(id1) is None:
             return []
@@ -146,12 +158,15 @@ class GraphAlgo(GraphAlgoInterface):
             Finds all the Strongly Connected Component(SCC) in the graph.
             @return: The list all SCC
         """
+        if self.my_graph is None:
+            return []
         # empty graph
         if self.my_graph.v_size() == 0:
             return []
         # reset all the components
         for node in self.my_graph.get_all_v().values():
             node.set_connected_component(None)
+            node.set_color("Red")
         list = []
         # for each node check if its SCC is None is yes  runs connected_components(node)
         # and its SCC  to the list of SCC
@@ -159,6 +174,8 @@ class GraphAlgo(GraphAlgoInterface):
             if node.connected_component is None:
                 list_help = self.connected_component(node.key)
                 list.append(list_help)
+        for node in self.my_graph.get_all_v().values():
+            node.set_color("White")
         return list
 
     def plot_graph(self) -> None:
@@ -193,6 +210,25 @@ class GraphAlgo(GraphAlgoInterface):
         ax.plot(x_vals, y_vals, "o", color='red')
         plt.show()
 
+    # def dfs_node(self, transpose: bool, time: int, node):
+    #     my_stack = stack()
+    #     my_stack.put(node)
+    #     while not my_stack.empty():
+    #         my_node = my_stack.get()
+    #         if my_node.get_color()== "White":
+    #             my_node.set_color("Gray")
+    #             my_time = time + 1
+    #             node.set_tag(time)
+    #             if transpose is False:
+    #                 neighbors = self.my_graph.all_out_edges_of_node(node.key)
+    #             else:
+    #                 neighbors = self.my_graph.all_in_edges_of_node(node.key)
+    #             for key in neighbors:
+    #              node_neighbor = self.my_graph.get_all_v().get(key)
+    #             if node_neighbor.get_color == "White":
+    #                 node_neighbor.set_parent(my_node)
+    #                 my_stack.put(node_neighbor)
+
     def bfs(self, node_key: int, upside_down: bool):
         """
         gets src and runs bfs algorithm on the graph from src
@@ -203,7 +239,8 @@ class GraphAlgo(GraphAlgoInterface):
         """
         # initialize all the tags to -1
         for node in self.my_graph.get_all_v().values():
-            node.set_tag(-1)
+            if node.get_color != "Red" or node.connected_component is None:
+                node.set_tag(-1)
         queue = SimpleQueue()
         src = self.my_graph.get_all_v().get(node_key)
         src.set_tag(0)
@@ -219,5 +256,5 @@ class GraphAlgo(GraphAlgoInterface):
             for key in neighbors:
                 node_neighbor = self.my_graph.get_all_v().get(key)
                 if node_neighbor.tag == -1:  # the first time this node is reached
-                    node_neighbor.set_tag(node_temp.tag + 1)
+                    node_neighbor.set_tag(0)
                     queue.put(node_neighbor)

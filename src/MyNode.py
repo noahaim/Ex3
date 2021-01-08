@@ -1,6 +1,6 @@
 class MyNode:
     def __init__(self, id: int, pos: str = None, tag: int = -1,
-                 weight: float = float('inf')):
+                 weight: float = float('inf'), color: str = "White"):
         self.key = id
         if pos is not None and isinstance(pos, str):  # so i can build the node from json when pos is a string
             self.pos = pos.split(",")
@@ -15,6 +15,15 @@ class MyNode:
         self.edges_out = {}
         self.parent = None
         self.connected_component = None
+        self.__color = color
+
+    def get_key(self):
+        return self.key
+    def set_color(self, color: str):
+        self.__color = color
+
+    def get_color(self):
+        return self.__color
 
     def set_tag(self, tag: int = 0):
         """
