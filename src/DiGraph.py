@@ -27,7 +27,7 @@ class DiGraph(GraphInterface):
 
     def get_all_v(self) -> dict:
         """return a dictionary of all the nodes in the Graph,
-           each node is represented using apair  (key, node_data)
+           each node is represented using a pair  (key, node_data)
         """
         return self.__nodes
 
@@ -181,7 +181,7 @@ class DiGraph(GraphInterface):
         if self.e_size() != other.e_size() or self.v_size() != other.v_size():
             return False
         return self.get_all_v() == other.get_all_v()  # checks if the nodes are the same (they hold the edges inside
-        # so also checks that
+        # so also checks that)
 
     def __str__(self):
        return "Graph: "+"|V|="+str(self.v_size())+" , |E|=" + str(self.e_size())

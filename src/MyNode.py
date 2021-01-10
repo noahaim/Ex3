@@ -9,40 +9,52 @@ class MyNode:
             #     pos_num = float(pos_num)
         else:
             self.pos = pos
-        self.tag = tag
-        self.weight = weight
+        self.__tag = tag
+        self.__weight = weight
         self.edges_in = {}
         self.edges_out = {}
-        self.parent = None
-        self.connected_component = None
+        self.__parent = None
+        self.__connected_component = None
+
+    def get_weight(self):
+        return self.__weight
+
+    def get_parent(self):
+        return self.__parent
+
+    def get_tag(self):
+        return self.__tag
+
+    def get_connected_component(self):
+        return self.__connected_component
 
     def set_tag(self, tag: int = 0):
         """
             set the tag of the node
             @param:tag
         """
-        self.tag = tag
+        self.__tag = tag
 
     def set_connected_component(self, key: int):
         """
             set the SCC for this node
             @param key: The representive node of the SCC
         """
-        self.connected_component = key
+        self.__connected_component = key
 
     def set_weight(self, weight: float = float('inf')):
         """
             set the weight of this node
             @param: weight
         """
-        self.weight = weight
+        self.__weight = weight
 
     def set_parent(self, parent: int = None):
         """
             set the parent of this node
             @param: parent
         """
-        self.parent = parent
+        self.__parent = parent
 
     def set_pos(self, other_pos: tuple = None):
         self.pos = other_pos
