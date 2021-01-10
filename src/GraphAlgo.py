@@ -1,15 +1,14 @@
 import json
+import math
+import random
 from queue import SimpleQueue, PriorityQueue
-import _json
 from typing import List
+
+import matplotlib.pyplot as plt
+
 from DiGraph import DiGraph
 from GraphAlgoInterface import GraphAlgoInterface
 from GraphInterface import GraphInterface
-import heapq
-import numpy as np
-import matplotlib.pyplot as plt
-import random
-import math
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -124,6 +123,8 @@ class GraphAlgo(GraphAlgoInterface):
             @param id1: The node id
             @return: The list of nodes in the SCC
         """
+        if self.my_graph is None:
+            return []
         # the node is not in the graph
         if self.my_graph.get_all_v().get(id1) is None:
             return []
@@ -140,6 +141,7 @@ class GraphAlgo(GraphAlgoInterface):
         help_list = [node for node in help_list if node.get_tag() != -1]  # dealt all of the nodes that are not reachable
         for node in help_list:
             node.set_connected_component(id1)  # update their SCC to src
+        help_list = [node.get_key() for node in help_list]
         return help_list
 
     def connected_components(self) -> List[list]:
@@ -147,12 +149,15 @@ class GraphAlgo(GraphAlgoInterface):
             Finds all the Strongly Connected Component(SCC) in the graph.
             @return: The list all SCC
         """
+        if self.my_graph is None:
+            return []
         # empty graph
         if self.my_graph.v_size() == 0:
             return []
         # reset all the components
         for node in self.my_graph.get_all_v().values():
             node.set_connected_component(None)
+            node.set_color("Red")
         list = []
         # for each node check if its SCC is None is yes  runs connected_components(node)
         # and its SCC  to the list of SCC
@@ -160,6 +165,8 @@ class GraphAlgo(GraphAlgoInterface):
             if node.get_connected_component() is None:
                 list_help = self.connected_component(node.key)
                 list.append(list_help)
+        for node in self.my_graph.get_all_v().values():
+            node.set_color("White")
         return list
 
     def plot_graph(self) -> None:
@@ -174,7 +181,7 @@ class GraphAlgo(GraphAlgoInterface):
         y_vals = []
         for v in self.my_graph.get_all_v().values():
             if v.pos is None:
-                v.set_pos((random.random()*100, random.random()*100, 0))
+                v.set_pos((random.random() * 100, random.random() * 100, 0))
             x_vals.append(v.pos[0])
             y_vals.append(v.pos[1])
         # ax = plt.axes()
@@ -189,6 +196,25 @@ class GraphAlgo(GraphAlgoInterface):
         plt.scatter(x_vals, y_vals, s=50)
         plt.show()
 
+    # def dfs_node(self, transpose: bool, time: int, node):
+    #     my_stack = stack()
+    #     my_stack.put(node)
+    #     while not my_stack.empty():
+    #         my_node = my_stack.get()
+    #         if my_node.get_color()== "White":
+    #             my_node.set_color("Gray")
+    #             my_time = time + 1
+    #             node.set_tag(time)
+    #             if transpose is False:
+    #                 neighbors = self.my_graph.all_out_edges_of_node(node.key)
+    #             else:
+    #                 neighbors = self.my_graph.all_in_edges_of_node(node.key)
+    #             for key in neighbors:
+    #              node_neighbor = self.my_graph.get_all_v().get(key)
+    #             if node_neighbor.get_color == "White":
+    #                 node_neighbor.set_parent(my_node)
+    #                 my_stack.put(node_neighbor)
+
     def bfs(self, node_key: int, upside_down: bool):
         """
         gets src and runs bfs algorithm on the graph from src
@@ -199,7 +225,8 @@ class GraphAlgo(GraphAlgoInterface):
         """
         # initialize all the tags to -1
         for node in self.my_graph.get_all_v().values():
-            node.set_tag(-1)
+            if node.get_color != "Red" or node.connected_component is None:
+                node.set_tag(-1)
         queue = SimpleQueue()
         src = self.my_graph.get_all_v().get(node_key)
         src.set_tag(0)
@@ -214,6 +241,7 @@ class GraphAlgo(GraphAlgoInterface):
                 neighbors = self.my_graph.all_in_edges_of_node(node_temp.key)
             for key in neighbors:
                 node_neighbor = self.my_graph.get_all_v().get(key)
+
                 if node_neighbor.get_tag() == -1:  # the first time this node is reached
-                    node_neighbor.set_tag(node_temp.get_tag() + 1)
+                    node_neighbor.set_tag(0)
                     queue.put(node_neighbor)

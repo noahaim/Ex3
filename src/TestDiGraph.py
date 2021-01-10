@@ -145,6 +145,7 @@ class MyTestCase(unittest.TestCase):
     def test_equal(self):
         g = DiGraph()
         other = DiGraph()
+        self.assertFalse(g == 5)
         self.assertTrue(g == other)
         for i in range(100):
             g.add_node(i)
@@ -162,6 +163,7 @@ class MyTestCase(unittest.TestCase):
         g.remove_edge(0, 2)
         self.assertTrue(g == other)
         self.assertFalse(g == 50)
+
 
 if __name__ == '__main__':
     unittest.main()

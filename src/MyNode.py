@@ -1,6 +1,6 @@
 class MyNode:
     def __init__(self, id: int, pos: str = None, tag: int = -1,
-                 weight: float = float('inf')):
+                 weight: float = float('inf'), color: str = "White"):
         self.key = id
         if pos is not None and isinstance(pos, str):  # so i can build the node from json when pos is a string
             self.pos = pos.split(",")
@@ -15,6 +15,7 @@ class MyNode:
         self.edges_out = {}
         self.__parent = None
         self.__connected_component = None
+        self.__color = color
 
     def get_weight(self):
         return self.__weight
@@ -27,6 +28,15 @@ class MyNode:
 
     def get_connected_component(self):
         return self.__connected_component
+
+    def get_key(self):
+        return self.key
+
+    def set_color(self, color: str):
+        self.__color = color
+
+    def get_color(self):
+        return self.__color
 
     def set_tag(self, tag: int = 0):
         """
@@ -42,13 +52,14 @@ class MyNode:
         """
         self.__connected_component = key
 
+
     def set_weight(self, weight: float = float('inf')):
         """
             set the weight of this node
             @param: weight
         """
         self.__weight = weight
-
+        
     def set_parent(self, parent: int = None):
         """
             set the parent of this node
@@ -109,7 +120,7 @@ class MyNode:
             :param other:
             :return: return true if this node weights is smaller the other weight false otherwise
         """
-        return self.weight < other.weight
+        return self.__weight < other.get_weight()
 
     def to_dict(self):
         """
@@ -134,4 +145,3 @@ class MyNode:
 
     def __repr__(self):
         return str(self.key) + ": |edges out| " + str(len(self.edges_out)) + " |edges in| " + str(len(self.edges_in))
-
