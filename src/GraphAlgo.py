@@ -92,7 +92,6 @@ class GraphAlgo(GraphAlgoInterface):
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         """
-<<<<<<< HEAD
         Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm
         @param id1: The start node id
         @param id2: The end node id
@@ -171,7 +170,6 @@ class GraphAlgo(GraphAlgoInterface):
              Otherwise, they will be placed in a random but elegant manner.
             @return: None
         """
-        pass
         x_vals = []
         y_vals = []
         for v in self.my_graph.get_all_v().values():
@@ -185,15 +183,17 @@ class GraphAlgo(GraphAlgoInterface):
             for n in self.my_graph.all_out_edges_of_node(v.key).keys():
                 x1 = v.pos[0]
                 y1 = v.pos[1]
-                x2 = self.my_graph.get_all_v().get(n).pos[0] - x1
-                y2 = self.my_graph.get_all_v().get(n).pos[1] - y1
-                temp = math.sqrt(x2 ** 2 + y2 ** 2)
-                x2 = x2 / temp
-                y2 = y2 / temp
-                temp = temp - 1.5
-                plt.arrow(x1, y1, temp * x2, temp * y2, head_width=1, head_length=1, fc='k', ec='k')
-
-        plt.plot(x_vals, y_vals, "o", color='red')
+                x2 = self.my_graph.get_all_v().get(n).pos[0]
+                y2 = self.my_graph.get_all_v().get(n).pos[1]
+                # temp = math.sqrt(x2 ** 2 + y2 ** 2)
+                # x2 = x2 / temp
+                # y2 = y2 / temp
+                # temp = temp - 1
+                # plt.arrow(x1, y1, temp * x2, temp * y2, head_width=1, head_length=1, fc='k', ec='k')
+                plt.annotate(s='', xy=(x1, y1), xytext=(x2, y2),
+                             arrowprops=dict(arrowstyle="<|-"))
+        # plt.plot(x_vals, y_vals, "o", color='red')
+        plt.scatter(x_vals, y_vals, s=50)
         plt.show()
 
     def bfs(self, node_key: int, upside_down: bool):
