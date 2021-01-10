@@ -177,6 +177,8 @@ class DiGraph(GraphInterface):
         :return: return true if 2 graph are equals false otherwise
         """
         if not isinstance(other, self.__class__):
+            print(self.__class__)
+            print(other.__class__)
             return False
         if self.e_size() != other.e_size() or self.v_size() != other.v_size():
             return False

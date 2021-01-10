@@ -52,14 +52,13 @@ class MyNode:
         """
         self.__connected_component = key
 
-
     def set_weight(self, weight: float = float('inf')):
         """
             set the weight of this node
             @param: weight
         """
         self.__weight = weight
-        
+
     def set_parent(self, parent: int = None):
         """
             set the parent of this node

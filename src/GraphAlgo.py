@@ -105,7 +105,7 @@ class GraphAlgo(GraphAlgoInterface):
         #  the weight of the shortest path from id1 to id2
         weight_path = node2.get_weight()
         #  no path from id1 to id2
-        if weight_path is float('inf'):
+        if weight_path == float('inf'):
             return float('inf'), []
         path = [id2]
         parent = node2.get_parent()
@@ -196,24 +196,7 @@ class GraphAlgo(GraphAlgoInterface):
         plt.scatter(x_vals, y_vals, s=50)
         plt.show()
 
-    # def dfs_node(self, transpose: bool, time: int, node):
-    #     my_stack = stack()
-    #     my_stack.put(node)
-    #     while not my_stack.empty():
-    #         my_node = my_stack.get()
-    #         if my_node.get_color()== "White":
-    #             my_node.set_color("Gray")
-    #             my_time = time + 1
-    #             node.set_tag(time)
-    #             if transpose is False:
-    #                 neighbors = self.my_graph.all_out_edges_of_node(node.key)
-    #             else:
-    #                 neighbors = self.my_graph.all_in_edges_of_node(node.key)
-    #             for key in neighbors:
-    #              node_neighbor = self.my_graph.get_all_v().get(key)
-    #             if node_neighbor.get_color == "White":
-    #                 node_neighbor.set_parent(my_node)
-    #                 my_stack.put(node_neighbor)
+
 
     def bfs(self, node_key: int, upside_down: bool):
         """
