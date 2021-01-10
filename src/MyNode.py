@@ -5,8 +5,6 @@ class MyNode:
         if pos is not None and isinstance(pos, str):  # so i can build the node from json when pos is a string
             self.pos = pos.split(",")
             self.pos = [float(i) for i in self.pos]
-            # for pos_num in self.pos:
-            #     pos_num = float(pos_num)
         else:
             self.pos = pos
         self.__tag = tag
