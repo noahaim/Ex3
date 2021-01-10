@@ -1,6 +1,6 @@
 import unittest
-from DiGraph import DiGraph
 
+from DiGraph import DiGraph
 
 class MyTestCase(unittest.TestCase):
 
@@ -116,6 +116,7 @@ class MyTestCase(unittest.TestCase):
             g.add_node(i)
         g.add_edge(0, 5, 5)
         g.add_edge(0, 6, 6)
+        g.add_edge(0, 0, 1)  # no edge between node to himself
         self.assertEqual(2, g.e_size())
         g.add_edge(0, 5, 5)  # adds edge that already exist should stay 2
         self.assertEqual(2, g.e_size())

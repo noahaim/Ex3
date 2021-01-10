@@ -96,6 +96,8 @@ class GraphAlgo(GraphAlgoInterface):
         @param id2: The end node id
         @return: The distance of the path, the path as a list
         """
+        if self.my_graph is None:
+            return float('inf'), []
         node2 = self.my_graph.get_all_v().get(id2)
         # id id1 or id2 not in the graph
         if self.my_graph.get_all_v().get(id1) is None or node2 is None:
@@ -105,7 +107,7 @@ class GraphAlgo(GraphAlgoInterface):
         #  the weight of the shortest path from id1 to id2
         weight_path = node2.get_weight()
         #  no path from id1 to id2
-        if weight_path is float('inf'):
+        if weight_path == float('inf'):
             return float('inf'), []
         path = [id2]
         parent = node2.get_parent()

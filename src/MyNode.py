@@ -5,8 +5,6 @@ class MyNode:
         if pos is not None and isinstance(pos, str):  # so i can build the node from json when pos is a string
             self.pos = pos.split(",")
             self.pos = [float(i) for i in self.pos]
-            # for pos_num in self.pos:
-            #     pos_num = float(pos_num)
         else:
             self.pos = pos
         self.__tag = tag
@@ -52,14 +50,13 @@ class MyNode:
         """
         self.__connected_component = key
 
-
     def set_weight(self, weight: float = float('inf')):
         """
             set the weight of this node
             @param: weight
         """
         self.__weight = weight
-        
+
     def set_parent(self, parent: int = None):
         """
             set the parent of this node
