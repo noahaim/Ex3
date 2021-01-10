@@ -10,15 +10,16 @@ class MyNode:
         else:
             self.pos = pos
         self.tag = tag
-        self.weight = weight
+        self.__weight = weight
         self.edges_in = {}
         self.edges_out = {}
         self.parent = None
-        self.connected_component = None
+        self.__connected_component = None
         self.__color = color
 
     def get_key(self):
         return self.key
+
     def set_color(self, color: str):
         self.__color = color
 
@@ -37,14 +38,21 @@ class MyNode:
             set the SCC for this node
             @param key: The representive node of the SCC
         """
-        self.connected_component = key
+        self.__connected_component = key
+
+    def get_connected_component(self):
+
+        return self.__connected_component
 
     def set_weight(self, weight: float = float('inf')):
         """
             set the weight of this node
             @param: weight
         """
-        self.weight = weight
+        self.__weight = weight
+
+    def get_weight(self, ):
+        return self.__weight
 
     def set_parent(self, parent: int = None):
         """
@@ -106,7 +114,7 @@ class MyNode:
             :param other:
             :return: return true if this node weights is smaller the other weight false otherwise
         """
-        return self.weight < other.weight
+        return self.__weight < other.get_weight()
 
     def to_dict(self):
         """
@@ -128,3 +136,6 @@ class MyNode:
         for dest, weight in self.edges_out.items():
             ans.append({"src": self.key, "dest": dest, "w": weight})
         return ans
+
+    def __repr__(self):
+        return str(self.key) + ": |edges out| " + str(len(self.edges_out)) + " |edges in| " + str(len(self.edges_in))

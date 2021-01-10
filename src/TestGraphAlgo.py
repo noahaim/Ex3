@@ -1,4 +1,7 @@
 import unittest
+import time
+
+import networkx as nx
 
 from DiGraph import DiGraph
 from GraphAlgo import GraphAlgo
@@ -20,38 +23,37 @@ class MyTestCase(unittest.TestCase):
         print(g1.shortest_path(0, 4))
         g1.plot_graph()
 
-    def test_connected_component_node(self):
-        g = DiGraph()
-        for i in range(10):
-            g.add_node(i)
-
-        # creating ccs between 0,5,6
-        g.add_edge(0, 5, 5)
-        g.add_edge(5, 0, 5)
-        g.add_edge(0, 6, 5)
-        g.add_edge(6, 0, 5)
-        algo = GraphAlgo(g)
-        list = algo.connected_component(0)
-        self.assertTrue(list.__contains__(g.get_all_v().get(5)))
-        self.assertTrue(list.__contains__(g.get_all_v().get(6)))
-        # add 7 but only one sided
-        g.add_edge(0, 7, 5)
-        list = algo.connected_component(0)
-        self.assertFalse(list.__contains__(g.get_all_v().get(7)))
-        # add 8 to the the ccs of 0
-        g.add_edge(6, 8, 8)
-        g.add_edge(8, 6, 8)
-        list = algo.connected_component(0)
-        list.sort(lambda x:x.get_key())
-        self.assertTrue(list.__contains__(g.get_all_v().get(8)))
-        # ccs should only contain 9 (no edges from 9)
-        list2 = algo.connected_component(9)
-        self.assertFalse(list2.__contains__(g.get_all_v().get(8)))
-        self.assertTrue(list2.__contains__(g.get_all_v().get(9)))
-        # creating list for the ccs of 5 should be equal to the list of node 0 because its the same ccs
-        list3 = algo.connected_component(5)
-        for node in list3:
-            self.assertTrue(list.__contains__(node))
+    # def test_connected_component_node(self):
+    #     g = DiGraph()
+    #     for i in range(10):
+    #         g.add_node(i)
+    #
+    #     # creating ccs between 0,5,6
+    #     g.add_edge(0, 5, 5)
+    #     g.add_edge(5, 0, 5)
+    #     g.add_edge(0, 6, 5)
+    #     g.add_edge(6, 0, 5)
+    #     algo = GraphAlgo(g)
+    #     list = algo.connected_component(0)
+    #     self.assertTrue(list.__contains__(g.get_all_v().get(5)))
+    #     self.assertTrue(list.__contains__(g.get_all_v().get(6)))
+    #     # add 7 but only one sided
+    #     g.add_edge(0, 7, 5)
+    #     list = algo.connected_component(0)
+    #     self.assertFalse(list.__contains__(g.get_all_v().get(7)))
+    #     # add 8 to the the ccs of 0
+    #     g.add_edge(6, 8, 8)
+    #     g.add_edge(8, 6, 8)
+    #     list = algo.connected_component(0)
+    #     self.assertTrue(list.__contains__(g.get_all_v().get(8)))
+    #     # ccs should only contain 9 (no edges from 9)
+    #     list2 = algo.connected_component(9)
+    #     self.assertFalse(list2.__contains__(g.get_all_v().get(8)))
+    #     self.assertTrue(list2.__contains__(g.get_all_v().get(9)))
+    #     # creating list for the ccs of 5 should be equal to the list of node 0 because its the same ccs
+    #     list3 = algo.connected_component(5)
+    #     for node in list3:
+    #         self.assertTrue(list.__contains__(node))
 
     def test_json_save_and_lode(self):
         # simple graph no edges
@@ -106,8 +108,8 @@ class MyTestCase(unittest.TestCase):
         g.add_edge(6, 0, 5)
         algo = GraphAlgo(g)
         list = algo.connected_component(0)
-        self.assertTrue(list.__contains__(g.get_all_v().get(5)))
-        self.assertTrue(list.__contains__(g.get_all_v().get(6)))
+        self.assertTrue(list.__contains__(g.get_all_v().get(5).get_key()))
+        self.assertTrue(list.__contains__(g.get_all_v().get(6).get_key()))
         # add 7 but only one sided
         g.add_edge(0, 7, 5)
         list = algo.connected_component(0)
@@ -116,12 +118,15 @@ class MyTestCase(unittest.TestCase):
         g.add_edge(6, 8, 8)
         g.add_edge(8, 6, 8)
         list = algo.connected_component(0)
-        self.assertTrue(algo.connected_component(0) == algo.connected_component(8))
-        self.assertTrue(list.__contains__(g.get_all_v().get(8)))
+        list8 = algo.connected_component(8)
+        list.sort()
+        list8.sort()
+        self.assertTrue(list == list8)
+        self.assertTrue(list.__contains__(g.get_all_v().get(8).get_key()))
         # ccs should only contain 9 (no edges from 9)
         list2 = algo.connected_component(9)
-        self.assertFalse(list2.__contains__(g.get_all_v().get(8)))
-        self.assertTrue(list2.__contains__(g.get_all_v().get(9)))
+        self.assertFalse(list2.__contains__(g.get_all_v().get(8).get_key()))
+        self.assertTrue(list2.__contains__(g.get_all_v().get(9).get_key()))
         # creating list for the ccs of 5 should be equal to the list of node 0 because its the same ccs
         list3 = algo.connected_component(5)
         for node in list3:
@@ -129,6 +134,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_list_of_SCC(self):
         g = DiGraph()
+
         for i in range(5):
             g.add_node(i)
         algo = GraphAlgo(g)
@@ -200,17 +206,6 @@ class MyTestCase(unittest.TestCase):
         print((algo.my_graph.get_all_v().get(0).pos[1]))
         print((algo.my_graph.to_dict()))
 
-    def test_create_graph_1000000_node(self):
-        graph = DiGraph()
-        for i in range(100000):
-            graph.add_node(i)
-        for i in range(100):
-            for j in range(10):
-                graph.add_edge(i, j, 1)
-        algo = GraphAlgo(graph)
-        algo.save_to_json("graph with 1000000 nodes.json")
-        print(graph.e_size())
-        print(graph.v_size())
 
 if __name__ == '__main__':
     unittest.main()
