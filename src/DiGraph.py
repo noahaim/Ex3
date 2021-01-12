@@ -67,7 +67,7 @@ class DiGraph(GraphInterface):
         """
         if weight < 0:
             return False
-        if id1 is id2:
+        if id1 == id2:
             return False
         if self.__nodes.get(id1) is None or self.__nodes.get(id2) is None:
             return False
@@ -177,6 +177,8 @@ class DiGraph(GraphInterface):
         :return: return true if 2 graph are equals false otherwise
         """
         if not isinstance(other, self.__class__):
+            print(self.__class__)
+            print(other.__class__)
             return False
         if self.e_size() != other.e_size() or self.v_size() != other.v_size():
             return False
