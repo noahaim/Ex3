@@ -1,11 +1,11 @@
 This project is about developing a data structure of a directional weighted graph.
 
-##We implemented 2 interfaces and 3 class:
+## We implemented 2 interfaces and 3 class:
 
-###.1.The first class is MyNode:
+### .1.The first class is MyNode:
 
 each node have key ,pos , one dictionary for each edges coming out of him and another dictionary for each edges to him .also he have  parent ,tag  weight,color and connected_component for the algorithm that will do on the graph.
-####The function in this class is:
+#### The function in this class is:
 -set_tag, set_connected_component,set_weight, set_parent ,set_pos.
 
 -add_edges_in , add_edges_out
@@ -49,9 +49,9 @@ each graph have __mc, __edges_size and dictionary  of __nodes .
 
 -__str__-return string with number of edges and number of nodes.
 
-###3.The third class is GraphAlgo implements GraphAlgoInterface:
+### 3.The third class is GraphAlgo implements GraphAlgoInterface:
 this class have field named my_graph that holds a DiGraph.
-####The function in this class is:
+#### The function in this class is:
 -get_graph-return the graph on which the algorithm works in.
 
 -load_from_json-loads a graph from a json file.
