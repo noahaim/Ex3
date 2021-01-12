@@ -24,7 +24,9 @@ each node have key ,pos , one dictionary for each edges coming out of him and an
 
 ### 2.The second class is DiGraph implements GraphInterface:
 each graph have __mc, __edges_size and dictionary  of __nodes .
-####The function in this class is:
+
+#### The function in this class is:
+
 -v_size-return the size of nodes in the graph.
 
 -e_size-return the size of the edges in the graph.
@@ -51,6 +53,7 @@ each graph have __mc, __edges_size and dictionary  of __nodes .
 
 ### 3.The third class is GraphAlgo implements GraphAlgoInterface:
 this class have field named my_graph that holds a DiGraph.
+
 #### The function in this class is:
 -get_graph-return the graph on which the algorithm works in.
 
@@ -65,6 +68,7 @@ this class have field named my_graph that holds a DiGraph.
 -connected_components-return list of list of all the Strongly Connected Component in the graph.
 
 -plot_graph-plots the graph.
+
 <a href="https://ibb.co/9wY3QLN"><img src="https://i.ibb.co/KNyzTkX/plot2.png" alt="plot2" border="0"></a>
  
 ### To clone this repository:
