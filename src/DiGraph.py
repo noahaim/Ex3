@@ -67,7 +67,7 @@ class DiGraph(GraphInterface):
         """
         if weight < 0:
             return False
-        if id1 is id2:
+        if id1 == id2:
             return False
         if self.__nodes.get(id1) is None or self.__nodes.get(id2) is None:
             return False

@@ -140,7 +140,8 @@ class GraphAlgo(GraphAlgoInterface):
         # run bfs on graph transpose with id1 as src (read the edges upside down)
         self.bfs(id1, True)
         # if they are still reachable after the edges are flipped its means that its SCC
-        help_list = [node for node in help_list if node.get_tag() != -1]  # dealt all of the nodes that are not reachable
+        help_list = [node for node in help_list if
+                     node.get_tag() != -1]  # dealt all of the nodes that are not reachable
         for node in help_list:
             node.set_connected_component(id1)  # update their SCC to src
         help_list = [node.get_key() for node in help_list]
@@ -159,10 +160,11 @@ class GraphAlgo(GraphAlgoInterface):
         # reset all the components
         for node in self.my_graph.get_all_v().values():
             node.set_connected_component(None)
-            node.set_color("Red")
+            node.set_color("Red")  # on the bfs if Red mode is on then nodes  that already
+            # have SCC will not take part in the bfs
         list = []
         # for each node check if its SCC is None is yes  runs connected_components(node)
-        # and its SCC  to the list of SCC
+        # and adds its SCC  to the list of SCC
         for node in self.my_graph.get_all_v().values():
             if node.get_connected_component() is None:
                 list_help = self.connected_component(node.key)
@@ -194,11 +196,9 @@ class GraphAlgo(GraphAlgoInterface):
                 y1 = v.pos[1]
                 x2 = self.my_graph.get_all_v().get(n).pos[0]
                 y2 = self.my_graph.get_all_v().get(n).pos[1]
-                plt.annotate(text="", xy=(x1, y1), xytext=(x2, y2),arrowprops=dict(arrowstyle="<|-"))
+                plt.annotate(text="", xy=(x1, y1), xytext=(x2, y2), arrowprops=dict(arrowstyle="<|-"))
         plt.scatter(x_vals, y_vals, s=50)
         plt.show()
-
-
 
     def bfs(self, node_key: int, upside_down: bool):
         """
@@ -210,7 +210,8 @@ class GraphAlgo(GraphAlgoInterface):
         """
         # initialize all the tags to -1
         for node in self.my_graph.get_all_v().values():
-            if node.get_color != "Red" or node.connected_component is None:
+            if node.get_color != "Red" or node.connected_component is None:#checks if we are in red mode then only nodes that dont have SCC
+                # participants in the bfs
                 node.set_tag(-1)
         queue = SimpleQueue()
         src = self.my_graph.get_all_v().get(node_key)
