@@ -51,17 +51,6 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(graph_algo.load_from_json("json_test.json"))
         self.assertTrue(graph == graph_algo.get_graph())
 
-    def test_plot(self):
-
-        g = DiGraph()
-        g.add_node(0, (2, 3, 4))
-        g.add_node(1, (1, 5, 4))
-        g.add_node(2)
-        g.add_edge(0, 1, 3)
-        g.add_edge(1, 2, 3)
-        g1 = GraphAlgo(g)
-        g1.plot_graph()
-
     def test_connected_component_node(self):
         g = DiGraph()
         for i in range(10):
@@ -155,6 +144,42 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(graph_algo.load_from_json("json_test.json"))
         self.assertTrue(graph == graph_algo.get_graph())
 
+    def test_plot(self):
+
+        g = DiGraph()
+        g.add_node(0, (1, 1, 4))
+        g.add_node(1, (2, 2, 4))
+        g.add_node(2, (3, 3, 3))
+        g.add_node(3, (4, 4, 4))
+        g.add_node(4, (5, 5, 5))
+        g.add_node(5, (6, 6, 6))
+        g.add_node(6, (7, 6, 7))
+        g.add_node(7, (8, 5, 5))
+        g.add_node(8, (9, 4, 4))
+        g.add_node(9, (10, 3, 3))
+        g.add_node(10, (14, 16, 1))
+        g.add_node(11, (8, 16, 1))
+        g.add_node(12, (9, 14, 1))
+        g.add_node(13, (10, 10, 1))
+        g.add_node(14)
+        g.add_node(15)
+        g.add_edge(0, 1, 3)
+        g.add_edge(1, 2, 3)
+        g.add_edge(2, 3, 1)
+        g.add_edge(3, 4, 3)
+        g.add_edge(4, 5, 3)
+        g.add_edge(5, 6, 3)
+        g.add_edge(6, 7, 3)
+        g.add_edge(7, 8, 3)
+        g.add_edge(8, 9, 3)
+        g.add_edge(9, 0, 3)
+        g.add_edge(10, 11, 3)
+        g.add_edge(11, 12, 3)
+        g.add_edge(12, 13, 3)
+        g.add_edge(13, 14, 3)
+        g.add_edge(14, 15, 3)
+        g1 = GraphAlgo(g)
+        g1.plot_graph()
 
 if __name__ == '__main__':
     unittest.main()

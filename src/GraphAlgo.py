@@ -180,23 +180,22 @@ class GraphAlgo(GraphAlgoInterface):
              Otherwise, they will be placed in a random but elegant manner.
             @return: None
         """
-        x_vals = []
-        y_vals = []
-        for v in self.my_graph.get_all_v().values():
+        for v in self.my_graph.get_all_v().values():#draw all the nodes
             if v.pos is None:
-                v.set_pos((random.random() * 100, random.random() * 100, 0))
-            x_vals.append(v.pos[0])
-            y_vals.append(v.pos[1])
-        # ax = plt.axes()
-        for v in self.my_graph.get_all_v().values():
+                v.set_pos((random.random() * self.my_graph.v_size(), random.random() * self.my_graph.v_size(), 0))
+            plt.scatter(v.pos[0], v.pos[1], s=50)
+        for v in self.my_graph.get_all_v().values():#draw all the edges
             plt.annotate(v.key, (v.pos[0], v.pos[1]), fontsize=10)
             for n in self.my_graph.all_out_edges_of_node(v.key).keys():
                 x1 = v.pos[0]
                 y1 = v.pos[1]
                 x2 = self.my_graph.get_all_v().get(n).pos[0]
                 y2 = self.my_graph.get_all_v().get(n).pos[1]
-                plt.annotate(text="", xy=(x1, y1), xytext=(x2, y2), arrowprops=dict(arrowstyle="<|-"))
-        plt.scatter(x_vals, y_vals, s=50)
+
+                plt.annotate(text="", xy=(x1, y1), xytext=(x2, y2), arrowprops=dict(arrowstyle="<-"))
+        plt.title("Plot Graph", size=24)
+        plt.xlabel('x axis')
+        plt.ylabel('y axis')
         plt.show()
 
     def bfs(self, node_key: int, upside_down: bool):
