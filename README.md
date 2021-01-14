@@ -75,9 +75,3 @@ this class have field named my_graph that holds a DiGraph.
 
 <a href="https://ibb.co/9wY3QLN"><img src="https://i.ibb.co/KNyzTkX/plot2.png" alt="plot2" border="0"></a>
  
-### To clone this repository:
-Write in your cmd the following:
-```buildoutcfg
-$ git clone https://github.com/noahaim/Ex3.git
-```
-
