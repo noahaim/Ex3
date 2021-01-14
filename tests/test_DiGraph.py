@@ -17,8 +17,8 @@ class MyTestCase(unittest.TestCase):
         g.add_edge(0, 4, 5)
         g.add_edge(0, 3, 5)
         self.assertEqual(104, g.get_mc())
-        g.remove_node(0)  # should be 104 + 3 for each edge + 1 for the delete of 0 itself
-        self.assertEqual(108, g.get_mc())
+        g.remove_node(0)
+        self.assertEqual(105, g.get_mc())
 
     def test_v_size(self):
         g = DiGraph()

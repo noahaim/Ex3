@@ -108,11 +108,9 @@ class DiGraph(GraphInterface):
         for key in self.all_in_edges_of_node(node_id).keys():
             self.__nodes.get(key).remove_edges_out(node_id)
             self.__edges_size -= 1
-            self.__mc += 1
         for key in self.all_out_edges_of_node(node_id).keys():
             self.__nodes.get(key).remove_edges_in(node_id)
             self.__edges_size -= 1
-            self.__mc += 1
         del self.__nodes[node_id]
         self.__mc += 1
         return True
